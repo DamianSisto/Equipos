@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gran Premio — Equipos F1</title>
+  <style>
+    :root{ --bg:#0b0b0f; --panel:#15151b; --text:#e9e9ef; --muted:#a8a8b4; --border:#2a2a33 }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}
+    .card{background:#15151b;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    h1{margin:0 0 8px;font-size:clamp(24px,4vw,34px)}
+    p{color:var(--muted);margin:8px 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:16px}
+    .team-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;border-radius:14px;border:1px solid var(--border);text-decoration:none}
+    .team-name{font-weight:800;text-align:center}
+    .sub{font-size:12px;color:var(--muted)}
+    .emblem{
+      width:auto;height:56px;display:block;object-fit:contain;
+      filter:drop-shadow(0 3px 10px rgba(0,0,0,.25));
+      border-radius:12px;border:1px solid rgba(255,255,255,.08);
+      background:#0e0e13;padding:4px;
+      transition:transform .18s ease, filter .18s ease, box-shadow .18s ease; /* animaciones */
+    }
+    /* ✨ Brillo/zoom suave al hover */
+    .team-card:hover .emblem{
+      transform:scale(1.06);
+      filter:drop-shadow(0 6px 16px rgba(0,0,0,.35)) brightness(1.12);
+      box-shadow:0 0 0 2px rgba(255,255,255,.06) inset;
+    }
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="card">
+      <h1>Gran Premio — Equipos F1</h1>
+      <p>Tocá tu equipo para ver tu dupla y el reglamento.</p>
+    </header>
+
+    <main class="card">
+      <div id="grid" class="grid"></div>
+    </main>
+
+    <footer>Derechos reservados por el capo de Damián con la colaboración de la capa de Valentina — Temática Fórmula 1</footer>
+  </div>
+
+  <script>
+    const TEAMS = [
+      "Ferrari","McLaren","Red Bull","Aston Martin","Mercedes",
+      "Alpine","Racing Bull","Williams","Haas","Kick Sauber"
+    ];
+
+    function theme(t){
+      const T={
+        "Ferrari":      {bg:"#1a0000",border:"#400000",accent:"#c00000"},
+        "McLaren":      {bg:"#1f1400",border:"#4a2a00",accent:"#ff8700"},
+        "Red Bull":     {bg:"#0f1326",border:"#223066",accent:"#ffcc00"},
+        "Aston Martin": {bg:"#001f1d",border:"#0b3a37",accent:"#00a389"},
+        "Mercedes":     {bg:"#001f1e",border:"#0a3d3b",accent:"#00a19b"},
+        "Alpine":       {bg:"#081233",border:"#1a2f7a",accent:"#3fa7ff"},
+        "Racing Bull":  {bg:"#020b26",border:"#102155",accent:"#5478ff"},
+        "Williams":     {bg:"#041b2a",border:"#0b3b59",accent:"#00a3e0"},
+        "Haas":         {bg:"#2a0a0a",border:"#551414",accent:"#d71920"},
+        "Kick Sauber":  {bg:"#001a12",border:"#003524",accent:"#00e65a"},
+      }; return T[t]||{bg:"#0f0f15",border:"#2a2a33",accent:"#fff"};
+    }
+
+    const LOGOS = {
+      "Ferrari":"img/ferrari.jpg",
+      "McLaren":"img/mclaren.jpg",
+      "Red Bull":"img/redbull.jpg",
+      "Aston Martin":"img/astonmartin.jpg",
+      "Mercedes":"img/mercedes.jpg",
+      "Alpine":"img/alpine.jpg",
+      "Racing Bull":"img/racingbull.jpg",
+      "Williams":"img/williams.jpg",
+      "Haas":"img/haas.jpg",
+      "Kick Sauber":"img/kicksauber.jpg"
+    };
+
+    const $g = document.getElementById('grid');
+    $g.innerHTML = TEAMS.map(t=>{
+      const th = theme(t);
+      const href = 'equipos.html?team='+encodeURIComponent(t);
+      const src = LOGOS[t];
+      return `
+        <a class="team-card" href="${href}"
+           style="border-color:${th.border};background:linear-gradient(180deg,${th.bg},rgba(0,0,0,.2));color:${th.accent}">
+          <img class="emblem" src="${src}" alt="${t}">
+          <div class="team-name">${t}</div>
+          <div class="sub">ver dupla</div>
+        </a>`;
+    }).join('');
+  </script>
+</body>
+</html>
